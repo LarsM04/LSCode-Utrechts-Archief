@@ -1,0 +1,12 @@
+.panorama {
+    display: flex;
+    overflow-x: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.panorama img {
+    display: block;
+    height: 100vh;
+    margin: 0;
+}
