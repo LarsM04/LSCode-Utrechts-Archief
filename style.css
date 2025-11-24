@@ -1,0 +1,84 @@
+/* Basis */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Georgia, serif;
+}
+
+/* Achtergrondfoto fullscreen */
+.background-image {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: url("achtergrond/utrecht.png") center/cover no-repeat;
+  z-index: -2;
+}
+
+/* Overlay voor contrast */
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.35);
+  z-index: -1;
+}
+
+/* Kaart in het midden */
+.card {
+  background: #f5f0e4dd;
+  padding: 30px;
+  width: 400px;
+  border-radius: 10px;
+  border: 3px solid #eb2424;
+  text-align: center;
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1; /* boven overlay */
+}
+
+/* Titel */
+.title {
+  font-size: 32px;
+  color: #eb2424;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* Foto */
+.center-photo {
+  width: 100%;
+  border-radius: 8px;
+  border: 2px solid #5c4a32;
+  margin: 15px 0;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Startknop */
+.open-button {
+  display: inline-block;
+  background: #eb2424;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  position: relative; /* voor z-index */
+  z-index: 2; /* boven overlay en kaart */
+  transition: 0.3s;
+}
+
+.open-button:hover {
+  background: #b81b1b;
+  transform: scale(1.05);
+}
+
+/* Info onder knop */
+.info {
+  font-size: 14px;
+  color: #333;
+  margin-top: 15px;
+  line-height: 1.4;
+}
