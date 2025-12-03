@@ -1,8 +1,8 @@
 /* PANORAMA CONTAINER */
 .panorama {
     display: flex;
-    position: relative;      /* Belangrijk: hotspots absolute t.o.v. panorama */
-    overflow-x: auto;        /* Horizontaal scrollen mogelijk */
+    position: relative;      
+    overflow-x: auto;        
     height: 100vh;
 }
 
@@ -10,8 +10,8 @@
 .panorama img {
     height: 100vh;
     display: block;
-    flex-shrink: 0;          /* Zorgt dat afbeeldingen niet krimpen */
-    margin-right: 2px;       /* Klein beetje ruimte tussen afbeeldingen */
+    flex-shrink: 0;        
+    margin-right: 2px;       
 }
 
 /* HOTSPOTS */
@@ -19,13 +19,13 @@
     position: absolute;
     width: 80px;
     height: 80px;
-    background-color: red;
+    background-color: rgb(66, 24, 206);
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    border-radius: 50%;      /* Rondje */
+    border-radius: 50%;      
     font-weight: bold;
     text-align: center;
 }
@@ -34,12 +34,16 @@
 #hotspot1 { left: 300px; top: 320px; }
 #hotspot2 { left: 400px; top: 20px; }
 #hotspot3 { left: 600px; top: 150px; }
+#hotspot4 { left: 400px; top: 10px; }
+#hotspot5 { left: 5000px; top: 180px; }
+#hotspot6 { left: 5500px; top: 200px; }
+#hotspot7 { left: 6500px; top: 230px; }
 
 /* UITLEG POPUP */
 .hotspot-uitleg {
-    display: none;           /* Standaard verborgen */
+    display: none;           
     position: absolute;
-    top: 90px;               /* Onder de hotspot */
+    top: 90px;              
     left: 0;                 
     width: 200px;
     background-color: rgb(176, 39, 39);
