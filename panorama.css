@@ -1,12 +1,57 @@
+/* PANORAMA CONTAINER */
 .panorama {
     display: flex;
-    overflow-x: auto;
-    padding: 0;
-    margin: 0;
+    position: relative;      /* Belangrijk: hotspots absolute t.o.v. panorama */
+    overflow-x: auto;        /* Horizontaal scrollen mogelijk */
+    height: 100vh;
 }
 
+/* AFBEELDINGEN */
 .panorama img {
-    display: block;
     height: 100vh;
-    margin: 0;
+    display: block;
+    flex-shrink: 0;          /* Zorgt dat afbeeldingen niet krimpen */
+    margin-right: 2px;       /* Klein beetje ruimte tussen afbeeldingen */
+}
+
+/* HOTSPOTS */
+.hotspot {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background-color: red;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 50%;      /* Rondje */
+    font-weight: bold;
+    text-align: center;
+}
+
+/* POSITIES VAN HOTSPOTS */
+#hotspot1 { left: 300px; top: 320px; }
+#hotspot2 { left: 400px; top: 20px; }
+#hotspot3 { left: 600px; top: 150px; }
+
+/* UITLEG POPUP */
+.hotspot-uitleg {
+    display: none;           /* Standaard verborgen */
+    position: absolute;
+    top: 90px;               /* Onder de hotspot */
+    left: 0;                 
+    width: 200px;
+    background-color: rgb(176, 39, 39);
+    color: white;
+    border: 2px solid black;
+    padding: 10px;
+    z-index: 10;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+/* TOON DE UITLEG ALS DE 'show' CLASS WORDT TOEGEVOEGD */
+.hotspot-uitleg.show {
+    display: block;
 }
