@@ -1,61 +1,70 @@
-/* PANORAMA CONTAINER */
+body {
+    margin: 0;
+}
+
+/* PANORAMA */
 .panorama {
     display: flex;
-    position: relative;      
-    overflow-x: auto;        
+    position: relative;
+    overflow-x: auto;
     height: 100vh;
 }
 
 /* AFBEELDINGEN */
 .panorama img {
     height: 100vh;
-    display: block;
-    flex-shrink: 0;        
-    margin-right: 2px;       
+    flex-shrink: 0;
 }
 
 /* HOTSPOTS */
 .hotspot {
     position: absolute;
-    width: 80px;
-    height: 80px;
-    background-color: rgb(66, 24, 206);
+    width: 70px;
+    height: 70px;
+    background: blue;
     color: white;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    border-radius: 50%;      
-    font-weight: bold;
-    text-align: center;
 }
 
-/* POSITIES VAN HOTSPOTS */
-#hotspot1 { left: 300px; top: 320px; }
+/* POSITIES */
+#hotspot1 { left: 800px; top: 220px; }
 #hotspot2 { left: 400px; top: 20px; }
-#hotspot3 { left: 600px; top: 150px; }
-#hotspot4 { left: 400px; top: 10px; }
-#hotspot5 { left: 5000px; top: 180px; }
-#hotspot6 { left: 5500px; top: 200px; }
-#hotspot7 { left: 6500px; top: 230px; }
+#hotspot3 { left: 3500px; top: 550px; }
+#hotspot4 { left: 8500px; top: 550px; }
+#hotspot5 { left: 10500px; top: 550px; }
 
-/* UITLEG POPUP */
-.hotspot-uitleg {
-    display: none;           
-    position: absolute;
-    top: 90px;              
-    left: 0;                 
-    width: 200px;
-    background-color: rgb(176, 39, 39);
-    color: white;
-    border: 2px solid black;
-    padding: 10px;
-    z-index: 10;
-    font-size: 14px;
-    border-radius: 5px;
+/* POPUP */
+.popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
 }
 
-/* TOON DE UITLEG ALS DE 'show' CLASS WORDT TOEGEVOEGD */
-.hotspot-uitleg.show {
-    display: block;
+.popup-content {
+    background: white;
+    padding: 20px;
+    width: 400px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.popup-content img {
+    width: 100%;
+    margin-top: 10px;
+}
+
+#popup-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 25px;
+    cursor: pointer;
 }
