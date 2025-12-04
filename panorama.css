@@ -1,70 +1,66 @@
 body {
-    margin: 0;
+  margin: 0;
 }
 
-/* PANORAMA */
 .panorama {
-    display: flex;
-    position: relative;
-    overflow-x: auto;
-    height: 100vh;
+  display: flex;
+  position: relative;
+  overflow-x: auto;
+  height: 100vh;
 }
 
-/* AFBEELDINGEN */
 .panorama img {
-    height: 100vh;
-    flex-shrink: 0;
+  height: 100vh;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
 }
 
-/* HOTSPOTS */
 .hotspot {
-    position: absolute;
-    width: 70px;
-    height: 70px;
-    background: blue;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: blue;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 2;
 }
 
-/* POSITIES */
-#hotspot1 { left: 800px; top: 220px; }
-#hotspot2 { left: 400px; top: 20px; }
-#hotspot3 { left: 3500px; top: 550px; }
-#hotspot4 { left: 8500px; top: 550px; }
-#hotspot5 { left: 10500px; top: 550px; }
-
-/* POPUP */
 .popup {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    justify-content: center;
-    align-items: center;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 
 .popup-content {
-    background: white;
-    padding: 20px;
-    width: 400px;
-    border-radius: 10px;
-    text-align: center;
-    position: relative;
+  background: white;
+  padding: 20px;
+  width: 400px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
 }
 
 .popup-content img {
-    width: 100%;
-    margin-top: 10px;
+  width: 100%;
+  margin-top: 10px;
 }
 
 #popup-close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 25px;
-    cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 25px;
+  cursor: pointer;
 }
