@@ -73,3 +73,5 @@ afbeeldingen.forEach(function (img) {
     inhoud.style.top = -muis.offsetY + "px";
   };
 });
+
+

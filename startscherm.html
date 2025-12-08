@@ -45,3 +45,15 @@
     </script>
   </body>
 </html>
+
+<script>
+  var foto = document.querySelector(".center-photo");
+
+  foto.onmouseenter = function () {
+    foto.style.transform = "scale(1.05)";
+  };
+
+  foto.onmouseleave = function () {
+    foto.style.transform = "scale(1)";
+  };
+</script>
