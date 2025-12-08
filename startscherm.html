@@ -30,30 +30,19 @@
       </div>
     </div>
 
+    <!-- ✅ GOEDE EN ENIGE SCRIPT -->
     <script>
-      const foto = document.querySelector(".center-photo");
+      var foto = document.querySelector(".center-photo");
 
       if (foto) {
-        foto.addEventListener("mouseenter", function () {
+        foto.onmouseenter = function () {
           foto.style.transform = "scale(1.05)";
-        });
+        };
 
-        foto.addEventListener("mouseleave", function () {
+        foto.onmouseleave = function () {
           foto.style.transform = "scale(1)";
-        });
+        };
       }
     </script>
   </body>
 </html>
-
-<script>
-  var foto = document.querySelector(".center-photo");
-
-  foto.onmouseenter = function () {
-    foto.style.transform = "scale(1.05)";
-  };
-
-  foto.onmouseleave = function () {
-    foto.style.transform = "scale(1)";
-  };
-</script>

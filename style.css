@@ -289,7 +289,7 @@ textarea:focus {
 .background-image {
   position: fixed;
   inset: 0;
-  background: url("achtergrond/utrecht.png") center/cover no-repeat;
+  background: url("Beeldmateriaal/utrecht.png") center/cover no-repeat;
   z-index: -2;
 }
 
