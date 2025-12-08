@@ -3,20 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Utrecht Archive – Startscherm</title>
+    <title>Utrechts Archief – Startscherm</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="background-image"></div>
     <div class="overlay"></div>
 
-    <div class="card fade-in">
-      <h1 class="title">Utrechts Archive</h1>
-
-      <div class="hotspot" id="hotspot10">
-        HS 9
-        <div class="hotspot-uitleg">Dit is de htntntntniiii</div>
-      </div>
+    <div class="start-card fade-in">
+      <h1 class="title">Utrechts Archief</h1>
 
       <img
         src="Beeldmateriaal/895.jpg"
@@ -24,7 +19,8 @@
         class="center-photo"
       />
 
-      <a href="panorama.html" class="open-button"> open </a>
+      <a href="panorama.php" class="open-button">Open panorama</a>
+
       <div class="info">
         <p>
           Het Panorama van Utrecht bestaat uit 33 pagina's met gedetailleerde
@@ -33,5 +29,19 @@
         </p>
       </div>
     </div>
+
+    <script>
+      const foto = document.querySelector(".center-photo");
+
+      if (foto) {
+        foto.addEventListener("mouseenter", function () {
+          foto.style.transform = "scale(1.05)";
+        });
+
+        foto.addEventListener("mouseleave", function () {
+          foto.style.transform = "scale(1)";
+        });
+      }
+    </script>
   </body>
 </html>
