@@ -121,7 +121,7 @@ $paginasMinimapResult = $conn->query('SELECT afbeelding FROM paginas ORDER BY id
         <button id="zoom-reset">Reset</button>
     </div>
 
-    <!-- Vergrootglas HTML is verwijderd (Sultan heeft vergrootglas weggehaald) -->
+    
 
     <script src="panorama.js"></script>
 </body>

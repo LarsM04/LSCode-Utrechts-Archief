@@ -1,6 +1,4 @@
-// ============================
-// POPUP
-// ============================
+
 (function () {
   const popup = document.getElementById("popup");
   const titleEl = document.getElementById("popup-title");
@@ -23,15 +21,14 @@
 
   closeBtn.onclick = () => (popup.style.display = "none");
 
-  // Klik op donkere achtergrond sluit ook popup
+  
   popup.onclick = e => {
     if (e.target === popup) popup.style.display = "none";
   };
 })();
 
-// ============================
+
 // MINIMAP + THUMBNAILS
-// ============================
 
 const track = document.getElementById("minimap-track");
 const leftBtn = document.getElementById("arrow-left");
@@ -68,7 +65,7 @@ if (track && leftBtn && rightBtn && thumbs.length > 0 && panorama && pages.lengt
     }
   }
 
-  // Spring naar de juiste panorama-pagina
+  
   function goToPage() {
     const page = pages[activeIndex];
     if (!page) return;
@@ -79,25 +76,22 @@ if (track && leftBtn && rightBtn && thumbs.length > 0 && panorama && pages.lengt
     });
   }
 
-  // Centreer de actieve thumbnail in de minimap (ongeveer)
+  
   function centerThumb() {
     const thumb = thumbs[activeIndex];
     if (!thumb) return;
 
     track.scrollTo({
-      left: thumb.offsetLeft - 100, // simpele centrering
+      left: thumb.offsetLeft - 100, 
       behavior: "smooth"
     });
   }
 
-  // Start: eerste thumbnail actief
+  
   updateThumbs();
   centerThumb();
 }
 
-// ============================
-// ZOOM IN / UIT / RESET
-// ============================
 
 let zoom = 1;
 
@@ -115,13 +109,13 @@ if (pano && btnIn && btnOut && btnReset) {
 
   // zoom uit
   btnOut.onclick = function () {
-    if (zoom > 0.4) { // minimale waarde
+    if (zoom > 0.4) { 
       zoom = zoom - 0.2;
     }
     applyZoom();
   };
 
-  // reset
+  
   btnReset.onclick = function () {
     zoom = 1;
     applyZoom();
