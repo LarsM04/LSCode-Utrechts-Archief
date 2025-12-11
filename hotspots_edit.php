@@ -2,6 +2,57 @@
 require 'auth_check.php';
 require 'db.php';
 
+//
+// Helper: extra foto’s opslaan voor een hotspot
+//
+function slaHotspotFotosOp(mysqli $conn, int $hotspotId, array &$errors): void
+{
+    // Geen files geüpload
+    if (empty($_FILES['extra_fotos']['name'][0])) {
+        return;
+    }
+
+    $uploadDir = 'uploads/hotspots/';
+
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    foreach ($_FILES['extra_fotos']['name'] as $index => $origineleNaam) {
+        $errorCode = $_FILES['extra_fotos']['error'][$index];
+
+        if ($errorCode === UPLOAD_ERR_NO_FILE) {
+            continue;
+        }
+
+        if ($errorCode !== UPLOAD_ERR_OK) {
+            $errors[] = 'Fout bij uploaden van een aanvullende foto.';
+            continue;
+        }
+
+        $tmpName = $_FILES['extra_fotos']['tmp_name'][$index];
+        $ext     = pathinfo($origineleNaam, PATHINFO_EXTENSION);
+
+        // Simpele extensie-check
+        if (!in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+            $errors[] = 'Alleen afbeeldingen (jpg, png, gif, webp) zijn toegestaan.';
+            continue;
+        }
+
+        $nieuwBestand = 'hotspot_' . $hotspotId . '_' . time() . '_' . mt_rand(1000, 9999) . '.' . $ext;
+        $doelPad      = $uploadDir . $nieuwBestand;
+
+        if (move_uploaded_file($tmpName, $doelPad)) {
+            $stmtFoto = $conn->prepare('INSERT INTO hotspot_fotos (hotspot_id, bestand) VALUES (?, ?)');
+            $stmtFoto->bind_param('is', $hotspotId, $doelPad);
+            $stmtFoto->execute();
+            $stmtFoto->close();
+        } else {
+            $errors[] = 'Een aanvullende foto kon niet worden opgeslagen.';
+        }
+    }
+}
+
 $pagina_id = isset($_GET['pagina_id']) ? (int) $_GET['pagina_id'] : 0;
 
 // Pagina-informatie ophalen
@@ -10,13 +61,13 @@ if ($pagina_id > 0) {
     $stmtP = $conn->prepare('SELECT titel, afbeelding FROM paginas WHERE id = ?');
     $stmtP->bind_param('i', $pagina_id);
     $stmtP->execute();
-    $resultP    = $stmtP->get_result();
+    $resultP     = $stmtP->get_result();
     $pagina_data = $resultP->fetch_assoc();
     $stmtP->close();
 }
 
-$id      = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-$errors  = [];
+$id     = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+$errors = [];
 
 // Verwerking van formulier
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -49,17 +100,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $hotspot_id = $stmt->insert_id;
                 $stmt->close();
 
+                // Tekst opslaan
                 $stmtInfo = $conn->prepare('INSERT INTO hotspot_info (hotspot_id, tekst) VALUES (?, ?)');
                 $stmtInfo->bind_param('is', $hotspot_id, $tekst);
                 $stmtInfo->execute();
                 $stmtInfo->close();
 
-                header('Location: hotspots_index.php?pagina_id=' . $pagina_id);
-                exit;
-            }
+                // Aanvullende foto’s opslaan
+                slaHotspotFotosOp($conn, $hotspot_id, $errors);
 
-            $errors[] = 'Fout bij opslaan: ' . $stmt->error;
-            $stmt->close();
+                if (empty($errors)) {
+                    header('Location: hotspots_index.php?pagina_id=' . $pagina_id);
+                    exit;
+                }
+            } else {
+                $errors[] = 'Fout bij opslaan: ' . $stmt->error;
+                $stmt->close();
+            }
         } else {
             // Bestaande hotspot bijwerken
             $stmt = $conn->prepare("
@@ -72,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->execute()) {
                 $stmt->close();
 
+                // Tekst bijwerken / invoegen
                 $stmtCheck = $conn->prepare('SELECT id FROM hotspot_info WHERE hotspot_id = ?');
                 $stmtCheck->bind_param('i', $id);
                 $stmtCheck->execute();
@@ -90,12 +148,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmtInfo->execute();
                 $stmtInfo->close();
 
-                header('Location: hotspots_index.php?pagina_id=' . $pagina_id);
-                exit;
-            }
+                // Nieuwe extra foto’s toevoegen
+                slaHotspotFotosOp($conn, $id, $errors);
 
-            $errors[] = 'Fout bij bijwerken: ' . $stmt->error;
-            $stmt->close();
+                if (empty($errors)) {
+                    header('Location: hotspots_index.php?pagina_id=' . $pagina_id);
+                    exit;
+                }
+            } else {
+                $errors[] = 'Fout bij bijwerken: ' . $stmt->error;
+                $stmt->close();
+            }
         }
     }
 }
@@ -128,6 +191,19 @@ if ($id > 0) {
     }
 
     $stmt->close();
+}
+
+// Bestaande aanvullende foto’s ophalen
+$hotspotFotos = [];
+if ($id > 0) {
+    $stmtF = $conn->prepare('SELECT id, bestand, bijschrift FROM hotspot_fotos WHERE hotspot_id = ? ORDER BY id ASC');
+    $stmtF->bind_param('i', $id);
+    $stmtF->execute();
+    $resF = $stmtF->get_result();
+    while ($r = $resF->fetch_assoc()) {
+        $hotspotFotos[] = $r;
+    }
+    $stmtF->close();
 }
 ?>
 <!DOCTYPE html>
@@ -175,7 +251,7 @@ if ($id > 0) {
         <br>
     <?php endif; ?>
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="<?= (int) $hotspot['id'] ?>">
         <input type="hidden" name="pagina_id" value="<?= (int) $pagina_id ?>">
 
@@ -204,6 +280,26 @@ if ($id > 0) {
 
         <label>Toelichting / tekst</label>
         <textarea name="tekst" rows="5" cols="50"><?= htmlspecialchars($hotspot['tekst'] ?? '') ?></textarea>
+
+        <label>Aanvullende foto’s (meerdere toegestaan)</label>
+        <input type="file" name="extra_fotos[]" accept="image/*" multiple>
+
+        <?php if (!empty($hotspotFotos)): ?>
+            <label>Bestaande aanvullende foto’s</label>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
+                <?php foreach ($hotspotFotos as $f): ?>
+                    <div style="text-align:center; font-size:12px;">
+                        <img src="<?= htmlspecialchars($f['bestand']) ?>"
+                             alt=""
+                             style="max-width:120px; max-height:80px; object-fit:cover; display:block; margin-bottom:4px;">
+                        <a href="hotspot_foto_delete.php?id=<?= (int)$f['id'] ?>&hotspot_id=<?= (int)$hotspot['id'] ?>&pagina_id=<?= (int)$pagina_id ?>"
+                           onclick="return confirm('Deze foto verwijderen?');">
+                            Verwijderen
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
         <button type="submit" class="btn btn-primary">Opslaan</button>
         <a href="hotspots_index.php?pagina_id=<?= (int) $pagina_id ?>" class="btn btn-secondary">Annuleren</a>
