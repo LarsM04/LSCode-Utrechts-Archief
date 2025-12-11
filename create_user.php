@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <title>Gebruiker aanmaken</title>
@@ -139,34 +140,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <h2>Nieuwe gebruiker aanmaken</h2>
+    <div class="container">
+        <h2>Nieuwe gebruiker aanmaken</h2>
 
-    <?php if ($error): ?>
-        <div class="error"><?= htmlspecialchars($error) ?></div>
-    <?php endif; ?>
+        <?php if ($error): ?>
+            <div class="error"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
 
-    <?php if ($success): ?>
-        <div class="success"><?= htmlspecialchars($success) ?></div>
-    <?php endif; ?>
+        <?php if ($success): ?>
+            <div class="success"><?= htmlspecialchars($success) ?></div>
+        <?php endif; ?>
 
-    <form method="post" action="create_user.php">
-        <label>Gebruikersnaam</label>
-        <input type="text" name="username" required>
+        <form method="post" action="create_user.php">
+            <label>Gebruikersnaam</label>
+            <input type="text" name="username" required>
 
-        <label>Wachtwoord</label>
-        <input type="password" name="password" required>
+            <label>Wachtwoord</label>
+            <input type="password" name="password" required>
 
-        <label>Herhaal wachtwoord</label>
-        <input type="password" name="password2" required>
+            <label>Herhaal wachtwoord</label>
+            <input type="password" name="password2" required>
 
-        <input type="submit" value="Gebruiker aanmaken">
-    </form>
+            <input type="submit" value="Gebruiker aanmaken">
+        </form>
 
-    <p style="margin-top: 10px; text-align: center;">
-        <a href="dashboard.php">Terug naar dashboard</a>
-    </p>
-</div>
+        <p style="margin-top: 10px; text-align: center;">
+            <a href="dashboard.php">Terug naar dashboard</a>
+        </p>
+    </div>
 </body>
+
 </html>

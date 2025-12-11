@@ -33,7 +33,6 @@ body {
   display: block;
 }
 
-/* Rode hotspots in Sultan-stijl, maar met centrering zoals in jullie versie */
 .hotspot {
   position: absolute;
   width: 70px;
@@ -59,7 +58,6 @@ body {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.75);
 }
 
-/* Popup (combinatie van jullie nette stijl + Sultan id's) */
 .popup {
   display: none;
   position: fixed;
@@ -117,7 +115,6 @@ body {
   color: #111827;
 }
 
-/* Terug-knop */
 .terug-knop {
   position: fixed;
   top: 20px;
@@ -140,7 +137,6 @@ body {
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
 }
 
-/* Oorspronkelijke mini-map */
 .panorama-minimap {
   position: fixed;
   right: 10px;
@@ -169,7 +165,6 @@ body {
   opacity: 0.85;
 }
 
-/* Vergrootglas (magnifier) - wordt in JS/HTML niet meer gebruikt */
 .magnifier {
   position: fixed;
   pointer-events: none;
@@ -192,8 +187,6 @@ body {
 .magnifier-inner .hotspot {
   visibility: visible;
 }
-
-/* (hieronder stonden in jouw bestand nog wat dubbele definities – die laat ik staan) */
 
 .panorama-minimap {
   position: fixed;
@@ -231,7 +224,7 @@ body {
   text-decoration: none;
   font-weight: bold;
   font-size: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   z-index: 5000;
   transition: 0.2s;
 }
@@ -250,8 +243,8 @@ body {
   pointer-events: none;
   border-radius: 50%;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
-  border: 4px solid rgba(255,255,255,0.7);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  border: 4px solid rgba(255, 255, 255, 0.7);
   z-index: 99999;
   background: #fff;
 }
@@ -264,15 +257,10 @@ body {
   will-change: transform, left, top;
 }
 
-.magnifier-inner .hotspot { 
+.magnifier-inner .hotspot {
   visibility: visible;
 }
 
-/* =========================================
-   EXTRA STYLING VAN SULTAN VOOR MINIMAP & ZOOM
-   ========================================= */
-
-/* Nieuwe minimap-stijl met pijlen en thumbnails */
 .panorama-minimap {
   position: fixed;
   left: 50%;
@@ -283,14 +271,13 @@ body {
   height: 78px;
   background: rgba(255, 255, 255, 0.97);
   border-radius: 14px;
-  padding: 6px 46px; /* ruimte voor pijlen links en rechts */
+  padding: 6px 46px;
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   z-index: 999;
 }
 
-/* Track met thumbnails */
 .minimap-track {
   overflow-x: auto;
   display: flex;
@@ -307,7 +294,8 @@ body {
   cursor: pointer;
   opacity: 0.9;
   border: 2px solid transparent;
-  transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+  transition: transform 0.12s ease, border-color 0.12s ease,
+    box-shadow 0.12s ease;
 }
 
 .minimap-thumb:hover {
@@ -319,7 +307,6 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
-/* Pijlen links/rechts bij minimap */
 .minimap-arrow {
   position: absolute;
   top: 50%;
@@ -349,7 +336,6 @@ body {
   background: #eee;
 }
 
-/* Zoom-knoppen rechtsboven */
 .zoom-buttons {
   position: fixed;
   right: 20px;

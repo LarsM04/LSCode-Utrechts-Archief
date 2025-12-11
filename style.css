@@ -2,8 +2,8 @@
   --bg: #fef2f2;
   --card-bg: #ffffff;
   --border-subtle: #fee2e2;
-  --primary: #dc2626;       /* Sultan-rood */
-  --primary-soft: #fee2e2;  /* Zachte roodtint */
+  --primary: #dc2626;
+  --primary-soft: #fee2e2;
   --text-main: #111827;
   --text-muted: #6b7280;
   --radius-lg: 12px;
@@ -285,7 +285,6 @@ textarea:focus {
   display: none;
 }
 
-/* Achtergrond voor startscherm */
 .background-image {
   position: fixed;
   inset: 0;
@@ -300,9 +299,6 @@ textarea:focus {
   z-index: -1;
 }
 
-/* ======================================
-   Startscherm (homepage)
-   ====================================== */
 .start-card {
   width: 400px;
   max-width: 90%;
@@ -340,8 +336,7 @@ textarea:focus {
   text-decoration: none;
   margin-top: 4px;
   box-shadow: 0 8px 18px rgba(220, 38, 38, 0.45);
-  transition: background 0.15s ease, transform 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .open-button:hover {

@@ -1,4 +1,3 @@
-
 (function () {
   const popup = document.getElementById("popup");
   const titleEl = document.getElementById("popup-title");
@@ -21,12 +20,10 @@
 
   closeBtn.onclick = () => (popup.style.display = "none");
 
-  
-  popup.onclick = e => {
+  popup.onclick = (e) => {
     if (e.target === popup) popup.style.display = "none";
   };
 })();
-
 
 // MINIMAP + THUMBNAILS
 
@@ -39,7 +36,14 @@ const pages = document.querySelectorAll(".panorama-page");
 
 let activeIndex = 0;
 
-if (track && leftBtn && rightBtn && thumbs.length > 0 && panorama && pages.length > 0) {
+if (
+  track &&
+  leftBtn &&
+  rightBtn &&
+  thumbs.length > 0 &&
+  panorama &&
+  pages.length > 0
+) {
   // Pijlen voor horizontaal scrollen van de minimap
   rightBtn.onclick = () => {
     track.scrollBy({ left: 200, behavior: "smooth" });
@@ -59,39 +63,35 @@ if (track && leftBtn && rightBtn && thumbs.length > 0 && panorama && pages.lengt
   });
 
   function updateThumbs() {
-    thumbs.forEach(t => t.classList.remove("active"));
+    thumbs.forEach((t) => t.classList.remove("active"));
     if (thumbs[activeIndex]) {
       thumbs[activeIndex].classList.add("active");
     }
   }
 
-  
   function goToPage() {
     const page = pages[activeIndex];
     if (!page) return;
 
     panorama.scrollTo({
       left: page.offsetLeft,
-      behavior: "smooth"
+      behavior: "smooth",
     });
   }
 
-  
   function centerThumb() {
     const thumb = thumbs[activeIndex];
     if (!thumb) return;
 
     track.scrollTo({
-      left: thumb.offsetLeft - 100, 
-      behavior: "smooth"
+      left: thumb.offsetLeft - 100,
+      behavior: "smooth",
     });
   }
 
-  
   updateThumbs();
   centerThumb();
 }
-
 
 let zoom = 1;
 
@@ -109,13 +109,12 @@ if (pano && btnIn && btnOut && btnReset) {
 
   // zoom uit
   btnOut.onclick = function () {
-    if (zoom > 0.4) { 
+    if (zoom > 0.4) {
       zoom = zoom - 0.2;
     }
     applyZoom();
   };
 
-  
   btnReset.onclick = function () {
     zoom = 1;
     applyZoom();

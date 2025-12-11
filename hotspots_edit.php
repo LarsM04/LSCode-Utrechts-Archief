@@ -2,12 +2,10 @@
 require 'auth_check.php';
 require 'db.php';
 
-//
-// Helper: extra foto’s opslaan voor een hotspot
-//
+
 function slaHotspotFotosOp(mysqli $conn, int $hotspotId, array &$errors): void
 {
-    // Geen files geüpload
+
     if (empty($_FILES['extra_fotos']['name'][0])) {
         return;
     }
@@ -33,7 +31,7 @@ function slaHotspotFotosOp(mysqli $conn, int $hotspotId, array &$errors): void
         $tmpName = $_FILES['extra_fotos']['tmp_name'][$index];
         $ext     = pathinfo($origineleNaam, PATHINFO_EXTENSION);
 
-        // Simpele extensie-check
+
         if (!in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
             $errors[] = 'Alleen afbeeldingen (jpg, png, gif, webp) zijn toegestaan.';
             continue;
@@ -55,7 +53,7 @@ function slaHotspotFotosOp(mysqli $conn, int $hotspotId, array &$errors): void
 
 $pagina_id = isset($_GET['pagina_id']) ? (int) $_GET['pagina_id'] : 0;
 
-// Pagina-informatie ophalen
+
 $pagina_data = null;
 if ($pagina_id > 0) {
     $stmtP = $conn->prepare('SELECT titel, afbeelding FROM paginas WHERE id = ?');
@@ -69,7 +67,7 @@ if ($pagina_id > 0) {
 $id     = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 $errors = [];
 
-// Verwerking van formulier
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id        = (int) ($_POST['id'] ?? 0);
     $pagina_id = (int) ($_POST['pagina_id'] ?? 0);
@@ -89,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errors)) {
         if ($id === 0) {
-            // Nieuwe hotspot
+
             $stmt = $conn->prepare("
                 INSERT INTO hotspots (pagina_id, x, y, titel)
                 VALUES (?, ?, ?, ?)
@@ -100,13 +98,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $hotspot_id = $stmt->insert_id;
                 $stmt->close();
 
-                // Tekst opslaan
+
                 $stmtInfo = $conn->prepare('INSERT INTO hotspot_info (hotspot_id, tekst) VALUES (?, ?)');
                 $stmtInfo->bind_param('is', $hotspot_id, $tekst);
                 $stmtInfo->execute();
                 $stmtInfo->close();
 
-                // Aanvullende foto’s opslaan
+
                 slaHotspotFotosOp($conn, $hotspot_id, $errors);
 
                 if (empty($errors)) {
@@ -118,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->close();
             }
         } else {
-            // Bestaande hotspot bijwerken
+
             $stmt = $conn->prepare("
                 UPDATE hotspots
                 SET x = ?, y = ?, titel = ?
@@ -129,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->execute()) {
                 $stmt->close();
 
-                // Tekst bijwerken / invoegen
+
                 $stmtCheck = $conn->prepare('SELECT id FROM hotspot_info WHERE hotspot_id = ?');
                 $stmtCheck->bind_param('i', $id);
                 $stmtCheck->execute();
@@ -148,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmtInfo->execute();
                 $stmtInfo->close();
 
-                // Nieuwe extra foto’s toevoegen
+
                 slaHotspotFotosOp($conn, $id, $errors);
 
                 if (empty($errors)) {
@@ -163,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Default hotspot-waarden
+
 $hotspot = [
     'id'        => $id,
     'pagina_id' => $pagina_id,
@@ -173,7 +171,7 @@ $hotspot = [
     'tekst'     => ''
 ];
 
-// Bestaande hotspot ophalen (voor bewerken)
+
 if ($id > 0) {
     $stmt = $conn->prepare("
         SELECT h.id, h.pagina_id, h.x, h.y, h.titel, i.tekst
@@ -193,7 +191,7 @@ if ($id > 0) {
     $stmt->close();
 }
 
-// Bestaande aanvullende foto’s ophalen
+
 $hotspotFotos = [];
 if ($id > 0) {
     $stmtF = $conn->prepare('SELECT id, bestand, bijschrift FROM hotspot_fotos WHERE hotspot_id = ? ORDER BY id ASC');
@@ -208,139 +206,142 @@ if ($id > 0) {
 ?>
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <title><?= $id ? 'Hotspot bewerken' : 'Nieuwe hotspot' ?></title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<header class="header">
-    <div class="logo">HUA Panorama CMS</div>
-    <nav>
-        <span>Ingelogd als <?= htmlspecialchars($_SESSION['username']) ?></span>
-        <a href="dashboard.php">Dashboard</a>
-        <a href="paginas_index.php">Pagina's</a>
-        <a href="hotspots_index.php">Hotspots</a>
-        <a href="create_user.php">Nieuwe gebruiker</a>
-        <a href="logout.php">Uitloggen</a>
-    </nav>
-</header>
+    <header class="header">
+        <div class="logo">HUA Panorama CMS</div>
+        <nav>
+            <span>Ingelogd als <?= htmlspecialchars($_SESSION['username']) ?></span>
+            <a href="dashboard.php">Dashboard</a>
+            <a href="paginas_index.php">Pagina's</a>
+            <a href="hotspots_index.php">Hotspots</a>
+            <a href="create_user.php">Nieuwe gebruiker</a>
+            <a href="logout.php">Uitloggen</a>
+        </nav>
+    </header>
 
-<main class="page">
-    <h1 class="page-title"><?= $id ? 'Hotspot bewerken' : 'Nieuwe hotspot' ?></h1>
+    <main class="page">
+        <h1 class="page-title"><?= $id ? 'Hotspot bewerken' : 'Nieuwe hotspot' ?></h1>
 
-    <?php if (!empty($errors)): ?>
-        <div class="error">
-            <?php foreach ($errors as $e): ?>
-                <p><?= htmlspecialchars($e) ?></p>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-
-    <?php if ($pagina_data): ?>
-        <p><strong>Klik op de afbeelding om de positie van de hotspot te bepalen.</strong></p>
-
-        <div class="hotspot-image-wrapper">
-            <img
-                src="<?= htmlspecialchars($pagina_data['afbeelding']) ?>"
-                alt="<?= htmlspecialchars($pagina_data['titel']) ?>"
-                id="panoramaImage">
-
-            <div id="hotspotPreview"></div>
-        </div>
-        <br>
-    <?php endif; ?>
-
-    <form method="post" enctype="multipart/form-data">
-        <input type="hidden" name="id" value="<?= (int) $hotspot['id'] ?>">
-        <input type="hidden" name="pagina_id" value="<?= (int) $pagina_id ?>">
-
-        <p><strong>Pagina ID:</strong> <?= (int) $pagina_id ?></p>
-
-        <label>X positie (%)</label>
-        <input
-            type="number"
-            name="x"
-            step="0.01"
-            min="0"
-            max="100"
-            value="<?= htmlspecialchars($hotspot['x']) ?>">
-
-        <label>Y positie (%)</label>
-        <input
-            type="number"
-            name="y"
-            step="0.01"
-            min="0"
-            max="100"
-            value="<?= htmlspecialchars($hotspot['y']) ?>">
-
-        <label>Titel</label>
-        <input type="text" name="titel" value="<?= htmlspecialchars($hotspot['titel']) ?>" required>
-
-        <label>Toelichting / tekst</label>
-        <textarea name="tekst" rows="5" cols="50"><?= htmlspecialchars($hotspot['tekst'] ?? '') ?></textarea>
-
-        <label>Aanvullende foto’s (meerdere toegestaan)</label>
-        <input type="file" name="extra_fotos[]" accept="image/*" multiple>
-
-        <?php if (!empty($hotspotFotos)): ?>
-            <label>Bestaande aanvullende foto’s</label>
-            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
-                <?php foreach ($hotspotFotos as $f): ?>
-                    <div style="text-align:center; font-size:12px;">
-                        <img src="<?= htmlspecialchars($f['bestand']) ?>"
-                             alt=""
-                             style="max-width:120px; max-height:80px; object-fit:cover; display:block; margin-bottom:4px;">
-                        <a href="hotspot_foto_delete.php?id=<?= (int)$f['id'] ?>&hotspot_id=<?= (int)$hotspot['id'] ?>&pagina_id=<?= (int)$pagina_id ?>"
-                           onclick="return confirm('Deze foto verwijderen?');">
-                            Verwijderen
-                        </a>
-                    </div>
+        <?php if (!empty($errors)): ?>
+            <div class="error">
+                <?php foreach ($errors as $e): ?>
+                    <p><?= htmlspecialchars($e) ?></p>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
 
-        <button type="submit" class="btn btn-primary">Opslaan</button>
-        <a href="hotspots_index.php?pagina_id=<?= (int) $pagina_id ?>" class="btn btn-secondary">Annuleren</a>
-    </form>
-</main>
+        <?php if ($pagina_data): ?>
+            <p><strong>Klik op de afbeelding om de positie van de hotspot te bepalen.</strong></p>
 
-<script>
-    const img     = document.getElementById('panoramaImage');
-    const preview = document.getElementById('hotspotPreview');
-    const inputX  = document.querySelector('input[name="x"]');
-    const inputY  = document.querySelector('input[name="y"]');
+            <div class="hotspot-image-wrapper">
+                <img
+                    src="<?= htmlspecialchars($pagina_data['afbeelding']) ?>"
+                    alt="<?= htmlspecialchars($pagina_data['titel']) ?>"
+                    id="panoramaImage">
 
-    if (img && preview && inputX && inputY) {
-        function updatePreviewFromInputs() {
-            const x = parseFloat(inputX.value);
-            const y = parseFloat(inputY.value);
+                <div id="hotspotPreview"></div>
+            </div>
+            <br>
+        <?php endif; ?>
 
-            if (!isNaN(x) && !isNaN(y)) {
-                preview.style.left = x + '%';
-                preview.style.top  = y + '%';
-                preview.style.display = 'block';
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<?= (int) $hotspot['id'] ?>">
+            <input type="hidden" name="pagina_id" value="<?= (int) $pagina_id ?>">
+
+            <p><strong>Pagina ID:</strong> <?= (int) $pagina_id ?></p>
+
+            <label>X positie (%)</label>
+            <input
+                type="number"
+                name="x"
+                step="0.01"
+                min="0"
+                max="100"
+                value="<?= htmlspecialchars($hotspot['x']) ?>">
+
+            <label>Y positie (%)</label>
+            <input
+                type="number"
+                name="y"
+                step="0.01"
+                min="0"
+                max="100"
+                value="<?= htmlspecialchars($hotspot['y']) ?>">
+
+            <label>Titel</label>
+            <input type="text" name="titel" value="<?= htmlspecialchars($hotspot['titel']) ?>" required>
+
+            <label>Toelichting / tekst</label>
+            <textarea name="tekst" rows="5" cols="50"><?= htmlspecialchars($hotspot['tekst'] ?? '') ?></textarea>
+
+            <label>Aanvullende foto’s (meerdere toegestaan)</label>
+            <input type="file" name="extra_fotos[]" accept="image/*" multiple>
+
+            <?php if (!empty($hotspotFotos)): ?>
+                <label>Bestaande aanvullende foto’s</label>
+                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
+                    <?php foreach ($hotspotFotos as $f): ?>
+                        <div style="text-align:center; font-size:12px;">
+                            <img src="<?= htmlspecialchars($f['bestand']) ?>"
+                                alt=""
+                                style="max-width:120px; max-height:80px; object-fit:cover; display:block; margin-bottom:4px;">
+                            <a href="hotspot_foto_delete.php?id=<?= (int)$f['id'] ?>&hotspot_id=<?= (int)$hotspot['id'] ?>&pagina_id=<?= (int)$pagina_id ?>"
+                                onclick="return confirm('Deze foto verwijderen?');">
+                                Verwijderen
+                            </a>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
+            <button type="submit" class="btn btn-primary">Opslaan</button>
+            <a href="hotspots_index.php?pagina_id=<?= (int) $pagina_id ?>" class="btn btn-secondary">Annuleren</a>
+        </form>
+    </main>
+
+    <script>
+        const img = document.getElementById('panoramaImage');
+        const preview = document.getElementById('hotspotPreview');
+        const inputX = document.querySelector('input[name="x"]');
+        const inputY = document.querySelector('input[name="y"]');
+
+        if (img && preview && inputX && inputY) {
+            function updatePreviewFromInputs() {
+                const x = parseFloat(inputX.value);
+                const y = parseFloat(inputY.value);
+
+                if (!isNaN(x) && !isNaN(y)) {
+                    preview.style.left = x + '%';
+                    preview.style.top = y + '%';
+                    preview.style.display = 'block';
+                }
             }
-        }
 
-        img.addEventListener('click', function (e) {
-            const rect = img.getBoundingClientRect();
+            img.addEventListener('click', function(e) {
+                const rect = img.getBoundingClientRect();
 
-            const offsetX = e.clientX - rect.left;
-            const offsetY = e.clientY - rect.top;
+                const offsetX = e.clientX - rect.left;
+                const offsetY = e.clientY - rect.top;
 
-            const xPercent = (offsetX / rect.width) * 100;
-            const yPercent = (offsetY / rect.height) * 100;
+                const xPercent = (offsetX / rect.width) * 100;
+                const yPercent = (offsetY / rect.height) * 100;
 
-            inputX.value = xPercent.toFixed(2);
-            inputY.value = yPercent.toFixed(2);
+                inputX.value = xPercent.toFixed(2);
+                inputY.value = yPercent.toFixed(2);
+
+                updatePreviewFromInputs();
+            });
 
             updatePreviewFromInputs();
-        });
-
-        updatePreviewFromInputs();
-    }
-</script>
+        }
+    </script>
 </body>
+
 </html>

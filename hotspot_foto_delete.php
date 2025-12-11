@@ -7,7 +7,6 @@ $hotspotId = isset($_GET['hotspot_id']) ? (int)$_GET['hotspot_id'] : 0;
 $pagina_id = isset($_GET['pagina_id']) ? (int)$_GET['pagina_id'] : 0;
 
 if ($fotoId > 0) {
-    // Pad van bestand ophalen
     $stmt = $conn->prepare('SELECT bestand FROM hotspot_fotos WHERE id = ?');
     $stmt->bind_param('i', $fotoId);
     $stmt->execute();
@@ -19,7 +18,6 @@ if ($fotoId > 0) {
     }
     $stmt->close();
 
-    // Record verwijderen
     $stmtDel = $conn->prepare('DELETE FROM hotspot_fotos WHERE id = ?');
     $stmtDel->bind_param('i', $fotoId);
     $stmtDel->execute();

@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
@@ -112,23 +113,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
+
 <body>
-<div class="login-container">
-    <h2>Login</h2>
+    <div class="login-container">
+        <h2>Login</h2>
 
-    <?php if ($error): ?>
-        <div class="error"><?= htmlspecialchars($error) ?></div>
-    <?php endif; ?>
+        <?php if ($error): ?>
+            <div class="error"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
 
-    <form method="post" action="login.php">
-        <label>Gebruikersnaam</label>
-        <input type="text" name="username" required>
+        <form method="post" action="login.php">
+            <label>Gebruikersnaam</label>
+            <input type="text" name="username" required>
 
-        <label>Wachtwoord</label>
-        <input type="password" name="password" required>
+            <label>Wachtwoord</label>
+            <input type="password" name="password" required>
 
-        <input type="submit" value="Inloggen">
-    </form>
-</div>
+            <input type="submit" value="Inloggen">
+        </form>
+    </div>
 </body>
+
 </html>
